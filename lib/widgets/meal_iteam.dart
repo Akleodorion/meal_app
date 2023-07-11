@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../models/meal.dart';
+import '../screens/detail.dart';
 
 class MealItem extends StatelessWidget {
   const MealItem({super.key, required this.meal});
@@ -12,7 +13,15 @@ class MealItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) {
+                return DetailScreen(meal: meal);
+              }),
+            ),
+          );
+        },
         child: Stack(children: [
           FadeInImage(
             height: 250,

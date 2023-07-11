@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
 import '../models/category.dart';
-import '../screens/meal.dart';
+import '../screens/meals.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
@@ -20,7 +20,7 @@ class CategoryScreen extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) {
-          return MealScreen(meals: availableMeals);
+          return MealsScreen(meals: availableMeals);
         },
       ),
     );

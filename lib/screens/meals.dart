@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/meal.dart';
 import '../widgets/meal_iteam.dart';
 
-class MealScreen extends StatelessWidget {
-  const MealScreen({super.key, required this.meals});
+class MealsScreen extends StatelessWidget {
+  const MealsScreen({super.key, required this.meals});
 
   final List<Meal> meals;
 
