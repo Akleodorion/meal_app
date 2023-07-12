@@ -4,8 +4,10 @@ import '../models/meal.dart';
 import '../screens/detail.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({super.key, required this.meal});
+  const MealItem(
+      {super.key, required this.meal, required this.onToggleFavorites});
 
+  final void Function(Meal meal) onToggleFavorites;
   final Meal meal;
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,10 @@ class MealItem extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: ((context) {
-                return DetailScreen(meal: meal);
+                return DetailScreen(
+                  meal: meal,
+                  onToggleFavorites: onToggleFavorites,
+                );
               }),
             ),
           );
