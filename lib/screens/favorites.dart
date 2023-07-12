@@ -11,9 +11,6 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your favorites meals'),
-      ),
       body: meals.isEmpty
           ? Center(
               child: Column(
