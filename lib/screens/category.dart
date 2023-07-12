@@ -18,6 +18,7 @@ class CategoryScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (ctx) {
           return MealsScreen(
+            category: category,
             meals: availableMeals,
             onToggleFavorites: onToggleFavorites,
           );
@@ -29,9 +30,6 @@ class CategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My app'),
-      ),
       body: GridView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

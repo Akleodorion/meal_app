@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_app/screens/category.dart';
 import '../models/meal.dart';
 import '../screens/favorites.dart';
+import '../widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -12,6 +13,7 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _currentIndex = 0;
+  String appBarTitle = 'Categories';
   final List<Meal> _favoriteMeals = [];
 
   void _toggleFavoriteMeal(Meal meal) {
@@ -40,6 +42,7 @@ class _TabsScreenState extends State<TabsScreen> {
       onToggleFavorites: _toggleFavoriteMeal,
     );
     if (_currentIndex == 1) {
+      appBarTitle = 'Your favorite meals';
       content = FavoritesScreen(
         meals: _favoriteMeals,
         onToggleFavorites: _toggleFavoriteMeal,
@@ -48,9 +51,14 @@ class _TabsScreenState extends State<TabsScreen> {
       content = CategoryScreen(
         onToggleFavorites: _toggleFavoriteMeal,
       );
+      appBarTitle = 'Categories';
     }
 
     return Scaffold(
+      drawer: const MainDrawer(),
+      appBar: AppBar(
+        title: Text(appBarTitle),
+      ),
       body: content,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
