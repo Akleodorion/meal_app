@@ -3,10 +3,8 @@ import '../models/meal.dart';
 import '../widgets/meal_iteam.dart';
 
 class FavoritesScreen extends StatelessWidget {
-  const FavoritesScreen(
-      {super.key, required this.meals, required this.onToggleFavorites});
+  const FavoritesScreen({super.key, required this.meals});
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorites;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +30,7 @@ class FavoritesScreen extends StatelessWidget {
             )
           : ListView(
               children: [
-                for (var meal in meals)
-                  MealItem(meal: meal, onToggleFavorites: onToggleFavorites),
+                for (var meal in meals) MealItem(meal: meal),
               ],
             ),
     );

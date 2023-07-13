@@ -1,45 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meal_app/providers/filters_provider.dart';
 
-enum Filter { glutenFree, lactoseFree, vagetarian, vegan }
-
-class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key, required this.filters});
-
-  final Map<Filter, bool> filters;
-  @override
-  State<FiltersScreen> createState() => _FilterScreenState();
-}
-
-class _FilterScreenState extends State<FiltersScreen> {
-  bool _isGlutenFree = true;
-  bool _isLactoseFree = false;
-  bool _isVegetarian = false;
-  bool _isVegan = false;
+class FiltersScreen extends ConsumerWidget {
+  const FiltersScreen({super.key});
 
   @override
-  void initState() {
-    _isGlutenFree = widget.filters[Filter.glutenFree]!;
-    _isLactoseFree = widget.filters[Filter.lactoseFree]!;
-    _isVegetarian = widget.filters[Filter.vagetarian]!;
-    _isVegan = widget.filters[Filter.vegan]!;
-    super.initState();
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filters = ref.watch(filtersProvider);
 
-  @override
-  Widget build(BuildContext context) {
+    final isGlutenFree = filters[Filter.glutenFree];
+    final isLactoseFree = filters[Filter.lactoseFree];
+    final isVegetarian = filters[Filter.vagetarian];
+    final isVegan = filters[Filter.vegan];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your filters'),
       ),
       body: WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pop({
-            Filter.glutenFree: _isGlutenFree,
-            Filter.lactoseFree: _isLactoseFree,
-            Filter.vagetarian: _isVegetarian,
-            Filter.vegan: _isVegan,
+          ref.read(filtersProvider.notifier).setFilters({
+            Filter.glutenFree: isGlutenFree,
+            Filter.lactoseFree: isLactoseFree,
+            Filter.vagetarian: isVegetarian,
+            Filter.vegan: isVegan,
           });
-          return false;
+
+          return true;
         },
         child: Column(
           children: [
@@ -52,11 +40,11 @@ class _FilterScreenState extends State<FiltersScreen> {
               subtitle: Text('Only includes gluten free meals',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onBackground)),
-              value: _isGlutenFree,
+              value: isGlutenFree!,
               onChanged: (value) {
-                setState(() {
-                  _isGlutenFree = value;
-                });
+                ref
+                    .read(filtersProvider.notifier)
+                    .setFilter(Filter.glutenFree, value);
               },
             ),
             SwitchListTile(
@@ -68,11 +56,11 @@ class _FilterScreenState extends State<FiltersScreen> {
               subtitle: Text('Only includes lactose free meals',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onBackground)),
-              value: _isLactoseFree,
+              value: isLactoseFree!,
               onChanged: (value) {
-                setState(() {
-                  _isLactoseFree = value;
-                });
+                ref
+                    .read(filtersProvider.notifier)
+                    .setFilter(Filter.lactoseFree, value);
               },
             ),
             SwitchListTile(
@@ -84,11 +72,11 @@ class _FilterScreenState extends State<FiltersScreen> {
               subtitle: Text('Only includes vegetarian meals',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onBackground)),
-              value: _isVegetarian,
+              value: isVegetarian!,
               onChanged: (value) {
-                setState(() {
-                  _isVegetarian = value;
-                });
+                ref
+                    .read(filtersProvider.notifier)
+                    .setFilter(Filter.vagetarian, value);
               },
             ),
             SwitchListTile(
@@ -100,11 +88,11 @@ class _FilterScreenState extends State<FiltersScreen> {
               subtitle: Text('Only includes vegan meals',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onBackground)),
-              value: _isVegan,
+              value: isVegan!,
               onChanged: (value) {
-                setState(() {
-                  _isVegan = value;
-                });
+                ref
+                    .watch(filtersProvider.notifier)
+                    .setFilter(Filter.vegan, value);
               },
             ),
           ],
