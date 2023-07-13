@@ -4,10 +4,8 @@ import '../models/meal.dart';
 import '../screens/detail.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem(
-      {super.key, required this.meal, required this.onToggleFavorites});
+  const MealItem({super.key, required this.meal});
 
-  final void Function(Meal meal) onToggleFavorites;
   final Meal meal;
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,6 @@ class MealItem extends StatelessWidget {
               builder: ((context) {
                 return DetailScreen(
                   meal: meal,
-                  onToggleFavorites: onToggleFavorites,
                 );
               }),
             ),

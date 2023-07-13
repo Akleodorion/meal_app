@@ -5,6 +5,7 @@ import 'package:meal_app/screens/category.dart';
 
 import '../models/meal.dart';
 import '../providers/meals_provider.dart';
+import '../providers/favorite_provider.dart';
 import '../screens/favorites.dart';
 import '../screens/filters.dart';
 import '../widgets/main_drawer.dart';
@@ -27,27 +28,6 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _currentIndex = 0;
   String appBarTitle = 'Categories';
   Map<Filter, bool> myFilters = kInitialFilters;
-  final List<Meal> _favoriteMeals = [];
-
-  void _toggleFavoriteMeal(Meal meal) {
-    if (_favoriteMeals.contains(meal)) {
-      setState(() {
-        _favoriteMeals.remove(meal);
-      });
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully added this meal from favorite'),
-      ));
-    } else {
-      setState(() {
-        _favoriteMeals.add(meal);
-      });
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully removed this meal from favorite'),
-      ));
-    }
-  }
 
   void _setScreens(String identifier) async {
     Navigator.pop(context);
@@ -87,19 +67,18 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     final meals = ref.watch(mealsProvider);
+    final favoriteMeals = ref.watch(favoriteMealsProvider);
+
     Widget content = CategoryScreen(
-      onToggleFavorites: _toggleFavoriteMeal,
       availableMeals: meals,
     );
     if (_currentIndex == 1) {
       appBarTitle = 'Your favorite meals';
       content = FavoritesScreen(
-        meals: _favoriteMeals,
-        onToggleFavorites: _toggleFavoriteMeal,
+        meals: favoriteMeals,
       );
     } else {
       content = CategoryScreen(
-        onToggleFavorites: _toggleFavoriteMeal,
         availableMeals: meals,
       );
       appBarTitle = 'Categories';
