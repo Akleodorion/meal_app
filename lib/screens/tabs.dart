@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meal_app/data/dummy_data.dart';
 import 'package:meal_app/screens/category.dart';
+
 import '../models/meal.dart';
+import '../providers/meals_provider.dart';
 import '../screens/favorites.dart';
-import '../widgets/main_drawer.dart';
 import '../screens/filters.dart';
+import '../widgets/main_drawer.dart';
 
 var kInitialFilters = {
   Filter.glutenFree: false,
@@ -13,19 +16,18 @@ var kInitialFilters = {
   Filter.vegan: false,
 };
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  ConsumerState<TabsScreen> createState() => _TabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _currentIndex = 0;
   String appBarTitle = 'Categories';
   Map<Filter, bool> myFilters = kInitialFilters;
   final List<Meal> _favoriteMeals = [];
-  List<Meal> availableMeals = dummyMeals;
 
   void _toggleFavoriteMeal(Meal meal) {
     if (_favoriteMeals.contains(meal)) {
@@ -60,8 +62,9 @@ class _TabsScreenState extends State<TabsScreen> {
           }),
         ),
       );
+
       setState(() {
-        availableMeals = dummyMeals.where((meal) {
+        final meals = dummyMeals.where((meal) {
           if (myFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
             return false;
           }
@@ -83,9 +86,10 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final meals = ref.watch(mealsProvider);
     Widget content = CategoryScreen(
       onToggleFavorites: _toggleFavoriteMeal,
-      availableMeals: availableMeals,
+      availableMeals: meals,
     );
     if (_currentIndex == 1) {
       appBarTitle = 'Your favorite meals';
@@ -96,7 +100,7 @@ class _TabsScreenState extends State<TabsScreen> {
     } else {
       content = CategoryScreen(
         onToggleFavorites: _toggleFavoriteMeal,
-        availableMeals: availableMeals,
+        availableMeals: meals,
       );
       appBarTitle = 'Categories';
     }
