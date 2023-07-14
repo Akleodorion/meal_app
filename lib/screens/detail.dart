@@ -37,7 +37,18 @@ class DetailScreen extends ConsumerWidget {
                 ));
               }
             },
-            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+                transitionBuilder: (child, animation) {
+                  return RotationTransition(
+                    turns: Tween<double>(begin: 0.2, end: 1).animate(animation),
+                    child: child,
+                  );
+                },
+                duration: const Duration(milliseconds: 200),
+                child: Icon(
+                  isFavorite ? Icons.star : Icons.star_border,
+                  key: ValueKey(isFavorite),
+                )),
           ),
         ],
       ),
